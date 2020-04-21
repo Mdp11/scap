@@ -8,11 +8,11 @@ int main(int argc, char *argv[])
     while(cmd != "q")
     {
         cmd.clear();
-        input_helper::PrintHelp();
+        inputHelper::PrintHelp();
         std::cin >> cmd;
-        if(input_helper::IsValidCommand(cmd))
+        if(inputHelper::IsValidCommand(cmd))
         {
-            input_helper::ProcessCommand(cmd);
+            inputHelper::ProcessCommand(cmd);
         }
     }
     return 0;
