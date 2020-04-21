@@ -1,4 +1,4 @@
-#include "input_helper.h"
+#include "input_helper.hpp"
 #include <iostream>
 
 void inputHelper::PrintHelp()

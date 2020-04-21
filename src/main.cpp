@@ -1,5 +1,6 @@
 #include <iostream>
-#include "input_helper.h"
+#include "input_helper.hpp"
+#include "music_player.hpp"
 #include "fmod.h"
 
 int main(int argc, char *argv[])
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
         if(inputHelper::IsValidCommand(cmd))
         {
             inputHelper::ProcessCommand(cmd);
+            MusicPlayer player;
         }
     }
     return 0;
