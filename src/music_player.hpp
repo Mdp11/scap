@@ -14,12 +14,12 @@ template <typename T>
 class MessageQueue 
 {
     public:
-        void push(std::unique_ptr<T> msg);
-        std::unique_ptr<T> pop();
+        void push(T msg);
+        T pop();
         void printContent();
     
     private:
-        std::queue<std::unique_ptr<T>> queue_;
+        std::queue<T> queue_;
         std::mutex mtx_;
         std::condition_variable msg_available_;
 
@@ -49,7 +49,7 @@ class MusicPlayer
         FMOD::Sound * currentsound_ {nullptr};
         FMOD::Channel* channel_ {nullptr};
 
-        MessageQueue<Audio> playlist_;
+        MessageQueue<std::unique_ptr<Audio>> playlist_;
         std::unique_ptr<Audio> current_audio_;
         bool shutdown_{false};
 

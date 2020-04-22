@@ -5,7 +5,7 @@
 #include "fmod_errors.h"
 
 template <typename T>
-std::unique_ptr<T> MessageQueue<T>::pop()
+T MessageQueue<T>::pop()
 {
     std::unique_lock lock{mtx_};
     msg_available_.wait(lock, [this]{ return !queue_.empty(); });
@@ -15,7 +15,7 @@ std::unique_ptr<T> MessageQueue<T>::pop()
 }
 
 template <typename T>
-void MessageQueue<T>::push(std::unique_ptr<T> msg)
+void MessageQueue<T>::push(T msg)
 {
     std::lock_guard lock{mtx_};
     queue_.emplace(std::move(msg));
