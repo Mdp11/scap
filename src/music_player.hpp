@@ -6,8 +6,11 @@
 #include "fmod.hpp"
 
 #include "playlist.hpp"
+#include "action_queue.hpp"
 #include "actions.hpp"
 #include "audio.hpp"
+
+class Action;
 
 class MusicPlayer
 {
@@ -22,6 +25,7 @@ class MusicPlayer
         void run();
         void enqueue(std::unique_ptr<Audio> audio) { playlist_.push(std::move(audio)); }
         void addAction(std::unique_ptr<Action> action) { actions_.push(std::move(action)); }
+        FMOD::Channel* getChannel(){ return channel_;} 
 
         std::string getCurrentSongInfo();
         void signalShutDown();
@@ -34,10 +38,10 @@ class MusicPlayer
         FMOD::Sound * currentsound_ {nullptr};
         FMOD::Channel* channel_ {nullptr};
 
-        Playlist playlist_;
-        ActionQueue actions_;
+        Playlist playlist_{};
+        ActionQueue actions_{};
 
-        std::unique_ptr<Audio> current_audio_;
+        std::unique_ptr<Audio> current_audio_{};
         bool shutdown_{false};
 
 };

@@ -1,7 +1,20 @@
 #include "actions.hpp"
+#include "music_player.hpp"
 
-bool ActionQueue::AreActionsRequested()
+void PlayPause::execute(MusicPlayer* player)
+{ 
+    auto channel = player->getChannel();
+    bool paused;
+    channel->getPaused(&paused);
+    paused ? channel->setPaused(false) : channel->setPaused(true);
+}
+
+void Stop::execute(MusicPlayer* player)
+{ 
+    player->getChannel()->stop();
+}
+
+void Quit::execute(MusicPlayer* player)
 {
-    std::lock_guard lock{mtx_};
-    return !queue_.empty();
+    player->signalShutDown();
 }

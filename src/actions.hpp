@@ -1,30 +1,31 @@
 #ifndef _ACTIONS_HPP_
 #define _ACTIONS_HPP_
 
-#include "message_queue.hpp"
 #include <memory>
+
 #include "fmod.hpp"
+
+class MusicPlayer;
 
 class Action
 {
     public:
-        virtual void execute(FMOD::Channel* channel) = 0;
+        virtual void execute(MusicPlayer* player) = 0;
 };
 
 class PlayPause : public Action
 {
-    virtual void execute(FMOD::Channel* channel)
-    { 
-        bool paused;
-        channel->getPaused(&paused);
-        paused ? channel->setPaused(false) : channel->setPaused(true);
-    }
+    virtual void execute(MusicPlayer* player);
 };
 
-class ActionQueue : public MessageQueue<std::unique_ptr<Action>>
+class Stop : public Action
 {
-    public:
-        bool AreActionsRequested();
+    virtual void execute(MusicPlayer* player);
+};
+
+class Quit : public Action
+{
+    virtual void execute(MusicPlayer* player);
 };
 
 #endif

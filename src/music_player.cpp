@@ -76,8 +76,14 @@ void MusicPlayer::run()
                 while(actions_.AreActionsRequested())
                 {
                     auto action = actions_.pop();
-                    action->execute(channel_);
+                    action->execute(this);
+                    if(shutdown_)
+                        break;
                 }
+                
+                if(shutdown_)
+                    break;
+
             } while (isPlaying);
         }
         catch(const std::exception& e)
@@ -97,7 +103,5 @@ std::string MusicPlayer::getCurrentSongInfo()
 
 void MusicPlayer::signalShutDown() 
 { 
-    //TODO: handle shutdown better
     shutdown_ = true;
-    playlist_.push(std::move(std::make_unique<Mp3>("shutdown")));
 }
