@@ -21,13 +21,6 @@ void MessageQueue<T>::push(T&& msg)
     msg_available_.notify_one();
 }
 
-template <typename T>
-void MessageQueue<T>::notify()
-{
-    std::lock_guard lock{mtx_};
-    msg_available_.notify_one();
-}
-
 void MusicPlayer::checkFmodOperation(const std::string &message, FMOD_RESULT result)
 {
     if (result != FMOD_OK) {

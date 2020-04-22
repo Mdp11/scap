@@ -14,7 +14,6 @@ class MessageQueue
         void push(T&& msg);
         T pop();
         void printContent();
-        void notify();
     
     private:
         std::queue<T> queue_;
