@@ -73,6 +73,11 @@ void MusicPlayer::run()
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 channel_->isPlaying(&isPlaying);
                 system_->update();
+                while(actions_.AreActionsRequested())
+                {
+                    auto action = actions_.pop();
+                    action->execute(channel_);
+                }
             } while (isPlaying);
         }
         catch(const std::exception& e)
