@@ -1,4 +1,6 @@
 #include "input_helper.hpp"
+#include "music_player.hpp"
+#include <regex>
 #include <iostream>
 
 void inputHelper::PrintHelp()
@@ -8,10 +10,22 @@ void inputHelper::PrintHelp()
 
 bool inputHelper::IsValidCommand(const std::string& cmd)
 {
-    return cmd == "q" || cmd == "l";
+    return cmd == "q" || cmd == "l" || cmd == "p";
 }
 
-void inputHelper::ProcessCommand(const std::string& cmd)
+void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
 {
-    std::cout << "Processing command " << cmd << " " << std::endl;
+    if(!IsValidCommand(cmd))
+    {
+        PrintHelp();
+        return;
+    }
+    if(cmd == "p")
+    {
+        std::string audio_file_name{};
+        std::cout << "Insert audio file path: " << std::endl;
+        std:: cin >> audio_file_name;
+        std::cout << "Enqueing song " << audio_file_name << std::endl;
+        player->enqueue(std::move(audio_file_name));
+    }
 }
