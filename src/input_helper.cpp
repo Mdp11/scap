@@ -5,11 +5,13 @@
 
 void inputHelper::PrintHelp()
 {
+    //TODO: add proper help section
     std::cout << "Help!" << std::endl;
 }
 
 bool inputHelper::IsValidCommand(const std::string& cmd)
 {
+    //TODO: add current song info and list playlist command and remove from playlist
     return cmd == "q" || cmd == "l" || cmd == "p";
 }
 
