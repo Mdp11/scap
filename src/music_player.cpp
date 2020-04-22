@@ -57,16 +57,16 @@ void MusicPlayer::run()
 {
     while(!shutdown_)
     {
-        auto audio = playlist_.pop();
+        current_audio_ = playlist_.pop();
         if(shutdown_)
             break;
         
         FMOD_RESULT result;
         //TODO: change info message
-        std::cout << "Playing " << audio->getFilePath();
+        std::cout << "Playing " << current_audio_->getFilePath();
         std::cout << std::endl;
         FMOD::Sound *sound = nullptr;
-        system_->createSound(audio->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
+        system_->createSound(current_audio_->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
 
         // Play the sound.
         result = system_->playSound(sound, nullptr, false, &channel_);
@@ -90,8 +90,13 @@ void MusicPlayer::run()
         } while (isPlaying);
         
         sound->release();
+        current_audio_.reset();
     }
+}
 
+std::string MusicPlayer::getCurrentSongInfo()
+{
+    return current_audio_ ? current_audio_->getFilePath() : "No audio currently playing";
 }
 
 void MusicPlayer::signalShutDown() 

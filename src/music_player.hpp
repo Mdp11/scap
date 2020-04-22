@@ -38,6 +38,7 @@ class MusicPlayer
 
         void run();
         void enqueue(std::unique_ptr<Audio> audio) { playlist_.push(std::move(audio)); }
+        std::string getCurrentSongInfo();
         void signalShutDown();
 
     private:
@@ -47,7 +48,9 @@ class MusicPlayer
         FMOD::ChannelGroup* channelGroup_ {nullptr};
         FMOD::Sound * currentsound_ {nullptr};
         FMOD::Channel* channel_ {nullptr};
+
         MessageQueue<Audio> playlist_;
+        std::unique_ptr<Audio> current_audio_;
         bool shutdown_{false};
 
 };
