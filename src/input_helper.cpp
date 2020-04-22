@@ -1,7 +1,9 @@
-#include "input_helper.hpp"
-#include "music_player.hpp"
 #include <regex>
 #include <iostream>
+
+#include "input_helper.hpp"
+#include "music_player.hpp"
+#include "mp3.hpp"
 
 void inputHelper::PrintHelp()
 {
@@ -28,6 +30,7 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
         std::cout << "Insert audio file path: " << std::endl;
         std:: cin >> audio_file_name;
         std::cout << "Enqueing song " << audio_file_name << std::endl;
-        player->enqueue(std::move(audio_file_name));
+        std::unique_ptr<Mp3> audio = std::make_unique<Mp3>(audio_file_name);
+        player->enqueue(std::move(audio));
     }
 }

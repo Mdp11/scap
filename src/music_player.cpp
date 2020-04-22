@@ -1,10 +1,11 @@
 #include <iostream>
 #include <thread>
 #include "music_player.hpp"
+#include "mp3.hpp"
 #include "fmod_errors.h"
 
 template <typename T>
-T MessageQueue<T>::pop()
+std::unique_ptr<T> MessageQueue<T>::pop()
 {
     std::unique_lock lock{mtx_};
     msg_available_.wait(lock, [this]{ return !queue_.empty(); });
@@ -14,7 +15,7 @@ T MessageQueue<T>::pop()
 }
 
 template <typename T>
-void MessageQueue<T>::push(T&& msg)
+void MessageQueue<T>::push(std::unique_ptr<T> msg)
 {
     std::lock_guard lock{mtx_};
     queue_.emplace(std::move(msg));
@@ -56,14 +57,16 @@ void MusicPlayer::run()
 {
     while(!shutdown_)
     {
-        auto audio = audio_queue_.pop();
+        auto audio = playlist_.pop();
         if(shutdown_)
             break;
         
         FMOD_RESULT result;
-        std::cout << "Playing... " << audio << std::endl;
+        //TODO: change info message
+        std::cout << "Playing " << audio->getFilePath();
+        std::cout << std::endl;
         FMOD::Sound *sound = nullptr;
-        system_->createSound(audio.c_str(), FMOD_DEFAULT, nullptr, &sound);
+        system_->createSound(audio->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
 
         // Play the sound.
         result = system_->playSound(sound, nullptr, false, &channel_);
@@ -94,5 +97,5 @@ void MusicPlayer::run()
 void MusicPlayer::signalShutDown() 
 { 
     shutdown_ = true;
-    audio_queue_.push("shutdown");
+    playlist_.push(std::move(std::make_unique<Mp3>("shutdown")));
 }

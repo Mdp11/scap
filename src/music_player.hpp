@@ -5,18 +5,21 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <memory>
 #include "fmod.hpp"
+
+#include "audio.hpp"
 
 template <typename T>
 class MessageQueue 
 {
     public:
-        void push(T&& msg);
-        T pop();
+        void push(std::unique_ptr<T> msg);
+        std::unique_ptr<T> pop();
         void printContent();
     
     private:
-        std::queue<T> queue_;
+        std::queue<std::unique_ptr<T>> queue_;
         std::mutex mtx_;
         std::condition_variable msg_available_;
 
@@ -34,7 +37,7 @@ class MusicPlayer
         MusicPlayer& operator=(MusicPlayer&&) = delete;
 
         void run();
-        void enqueue(std::string&& audio) { audio_queue_.push(std::move(audio)); }
+        void enqueue(std::unique_ptr<Audio> audio) { playlist_.push(std::move(audio)); }
         void signalShutDown();
 
     private:
@@ -44,7 +47,7 @@ class MusicPlayer
         FMOD::ChannelGroup* channelGroup_ {nullptr};
         FMOD::Sound * currentsound_ {nullptr};
         FMOD::Channel* channel_ {nullptr};
-        MessageQueue<std::string> audio_queue_;
+        MessageQueue<Audio> playlist_;
         bool shutdown_{false};
 
 };
