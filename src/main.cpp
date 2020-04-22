@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
         if(inputHelper::IsValidCommand(cmd))
         {
             inputHelper::ProcessCommand(cmd);
-            MusicPlayer player;
+            MusicPlayer player{};
         }
     }
     return 0;
