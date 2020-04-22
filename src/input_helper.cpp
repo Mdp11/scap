@@ -8,8 +8,12 @@
 
 void inputHelper::PrintHelp()
 {
-    //TODO: add proper help section
-    std::cout << "Help!" << std::endl;
+    std::cout << "Available commands: " << std::endl;
+    std::cout << "  - a (add new audio to the playlist, audio path will be requested)" << std::endl;
+    std::cout << "  - c (print currently played audio)" << std::endl;
+    std::cout << "  - p (pause/play)" << std::endl;
+    std::cout << "  - h (help, show this text)" << std::endl;
+    std::cout << "  - q (quit)" << std::endl;
 }
 
 bool inputHelper::IsValidCommand(const std::string& cmd)
@@ -22,10 +26,13 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
 {
     if(!IsValidCommand(cmd))
     {
+        system("clear");
+        if(cmd != "h")
+            std::cout << "Invalid command!" << std::endl;
         PrintHelp();
         return;
     }
-    if(cmd == "a")
+    else if(cmd == "a")
     {
         std::string audio_file_name{};
         std::cout << "Insert audio file path: " << std::endl;
@@ -43,4 +50,5 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
     {
         player->addAction(std::make_unique<PlayPause>());
     }
+    system("clear");
 }
