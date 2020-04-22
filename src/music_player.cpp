@@ -31,19 +31,26 @@ void MusicPlayer::checkFmodOperation(const std::string &message, FMOD_RESULT res
 
 MusicPlayer::MusicPlayer()
 {
-    FMOD_RESULT result;
-    // Create the main system object.
-    result = FMOD::System_Create(&system_);
-    checkFmodOperation("FMOD: Failed to create system object", result);
+    try
+    {
+        FMOD_RESULT result;
+        // Create the main system object.
+        result = FMOD::System_Create(&system_);
+        checkFmodOperation("FMOD: Failed to create system object", result);
 
-    // Initialize FMOD.
-    result = system_->init(512, FMOD_INIT_NORMAL, nullptr);
-    checkFmodOperation("FMOD: Failed to initialise system object", result);
+        // Initialize FMOD.
+        result = system_->init(512, FMOD_INIT_NORMAL, nullptr);
+        checkFmodOperation("FMOD: Failed to initialise system object", result);
 
-    // Create the channel group.
-    result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
-    checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
-
+        // Create the channel group.
+        result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
+        checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
+    }
+    catch(std::runtime_error e)
+    {
+        std::cout << "Exception while creating MusicPlayer: " << e.what() << std::endl;
+        std::cout << "Aborting." << std::endl;
+    }
 }
 
 MusicPlayer::~MusicPlayer()
