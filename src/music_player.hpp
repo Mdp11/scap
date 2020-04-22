@@ -2,30 +2,16 @@
 #define _MUSIC_PLAYER_HPP_
 
 #include <string>
-#include <queue>
-#include <mutex>
-#include <condition_variable>
 #include <memory>
 #include "fmod.hpp"
 
+#include "playlist.hpp"
+#include "action_queue.hpp"
+#include "actions.hpp"
 #include "audio.hpp"
 
-template <typename T>
-class MessageQueue 
-{
-    public:
-        void push(T msg);
-        T pop();
-        void printContent();
-    
-    private:
-        std::queue<T> queue_;
-        std::mutex mtx_;
-        std::condition_variable msg_available_;
+class Action;
 
-};
-
-//TODO Inherit from Threadable
 class MusicPlayer
 {
     public:
@@ -38,6 +24,9 @@ class MusicPlayer
 
         void run();
         void enqueue(std::unique_ptr<Audio> audio) { playlist_.push(std::move(audio)); }
+        void addAction(std::unique_ptr<Action> action) { actions_.push(std::move(action)); }
+        FMOD::Channel* getChannel(){ return channel_;} 
+
         std::string getCurrentSongInfo();
         void signalShutDown();
 
@@ -49,8 +38,10 @@ class MusicPlayer
         FMOD::Sound * currentsound_ {nullptr};
         FMOD::Channel* channel_ {nullptr};
 
-        MessageQueue<std::unique_ptr<Audio>> playlist_;
-        std::unique_ptr<Audio> current_audio_;
+        Playlist playlist_{};
+        ActionQueue actions_{};
+
+        std::unique_ptr<Audio> current_audio_{};
         bool shutdown_{false};
 
 };

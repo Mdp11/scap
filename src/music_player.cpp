@@ -1,26 +1,9 @@
 #include <iostream>
 #include <thread>
-#include "music_player.hpp"
-#include "mp3.hpp"
 #include "fmod_errors.h"
 
-template <typename T>
-T MessageQueue<T>::pop()
-{
-    std::unique_lock lock{mtx_};
-    msg_available_.wait(lock, [this]{ return !queue_.empty(); });
-    auto msg = std::move(queue_.front());
-    queue_.pop();
-    return msg;
-}
-
-template <typename T>
-void MessageQueue<T>::push(T msg)
-{
-    std::lock_guard lock{mtx_};
-    queue_.emplace(std::move(msg));
-    msg_available_.notify_one();
-}
+#include "music_player.hpp"
+#include "mp3.hpp"
 
 void MusicPlayer::checkFmodOperation(const std::string &message, FMOD_RESULT result)
 {
@@ -90,6 +73,17 @@ void MusicPlayer::run()
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 channel_->isPlaying(&isPlaying);
                 system_->update();
+                while(actions_.AreActionsRequested())
+                {
+                    auto action = actions_.pop();
+                    action->execute(this);
+                    if(shutdown_)
+                        break;
+                }
+                
+                if(shutdown_)
+                    break;
+
             } while (isPlaying);
         }
         catch(const std::exception& e)
@@ -97,7 +91,6 @@ void MusicPlayer::run()
             std::cout << e.what() << std::endl;
             std::cout << "The file you tried to play does not exist or it is not an audio file" << std::endl;
         }
-                
         sound->release();
         current_audio_.reset();
     }
@@ -110,7 +103,5 @@ std::string MusicPlayer::getCurrentSongInfo()
 
 void MusicPlayer::signalShutDown() 
 { 
-    //TODO: handle shutdown better
     shutdown_ = true;
-    playlist_.push(std::move(std::make_unique<Mp3>("shutdown")));
 }
