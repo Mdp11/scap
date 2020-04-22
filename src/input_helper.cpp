@@ -36,7 +36,7 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
     }
     else if(cmd == "c")
     {
-        auto p = std::async(std::launch::async, &MusicPlayer::getCurrentSongInfo, player);
-        std::cout << "Currently playing " << p.get() << std::endl;
+        auto current_song_info_ = std::async(std::launch::async, &MusicPlayer::getCurrentSongInfo, player);
+        std::cout << "Currently playing " << current_song_info_.get() << std::endl;
     }
 }
