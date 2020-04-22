@@ -15,7 +15,7 @@ void inputHelper::PrintHelp()
 bool inputHelper::IsValidCommand(const std::string& cmd)
 {
     //TODO: add current song info and list playlist command and remove from playlist and go to next song in queue and stop current song
-    return cmd == "q" || cmd == "c" || cmd == "p";
+    return cmd == "q" || cmd == "c" || cmd == "p" || cmd == "a";
 }
 
 void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
@@ -25,7 +25,7 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
         PrintHelp();
         return;
     }
-    if(cmd == "p")
+    if(cmd == "a")
     {
         std::string audio_file_name{};
         std::cout << "Insert audio file path: " << std::endl;
@@ -38,5 +38,9 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
     {
         auto current_song_info_ = std::async(std::launch::async, &MusicPlayer::getCurrentSongInfo, player);
         std::cout << "Currently playing " << current_song_info_.get() << std::endl;
+    }
+    else if(cmd == "p")
+    {
+        player->addAction(std::make_unique<PlayPause>());
     }
 }

@@ -2,6 +2,7 @@
 #define _INPUT_HELPER_HPP_
 
 #include <string>
+#include <unordered_map>
 
 class MusicPlayer;
 
