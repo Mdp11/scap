@@ -12,5 +12,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/fmod/lib/x86_64)
 
 # Add project executable
-add_executable(cmd_audio_player ${project_SRCS})
-target_link_libraries(cmd_audio_player libfmod.so)
+add_executable(scap ${project_SRCS})
+target_link_libraries(scap libfmod.so)
