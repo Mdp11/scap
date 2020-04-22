@@ -27,6 +27,12 @@ class MusicPlayer
 {
     public:
         MusicPlayer();
+        ~MusicPlayer();
+        MusicPlayer(const MusicPlayer&) = delete;
+        MusicPlayer(MusicPlayer&&) = delete;
+        MusicPlayer& operator=(const MusicPlayer&) = delete;
+        MusicPlayer& operator=(MusicPlayer&&) = delete;
+
         void run();
         void enqueue(std::string&& audio) { audio_queue_.push(std::move(audio)); }
         void signalShutDown();

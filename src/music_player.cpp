@@ -45,6 +45,12 @@ MusicPlayer::MusicPlayer()
 
 }
 
+MusicPlayer::~MusicPlayer()
+{
+    channelGroup_->release();
+    system_->release();
+}
+
 
 void MusicPlayer::run()
 {
@@ -76,11 +82,11 @@ void MusicPlayer::run()
         bool isPlaying = false;
         do {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
             channel_->isPlaying(&isPlaying);
-
             system_->update();
         } while (isPlaying);
+        
+        sound->release();
     }
 
 }
