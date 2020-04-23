@@ -11,14 +11,14 @@ class MessageQueue
     public:
         void push(T msg)
         {
-            std::lock_guard lock{mtx_};
+            std::lock_guard<std::mutex> lock{mtx_};
             queue_.emplace_back(std::move(msg));
             msg_available_.notify_one();
         }
         
         T pop()
         {
-            std::unique_lock lock{mtx_};
+            std::unique_lock<std::mutex> lock{mtx_};
             msg_available_.wait(lock, [this]{ return !queue_.empty(); });
             auto msg = std::move(queue_.front());
             queue_.pop_front();
