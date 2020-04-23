@@ -1,5 +1,5 @@
-#ifndef _INPUT_HELPER_HPP_
-#define _INPUT_HELPER_HPP_
+#ifndef _IO_HANDLER_HPP_
+#define _IO_HANDLER_HPP_
 
 #include <string>
 #include <unordered_map>
@@ -12,8 +12,9 @@ class IOHandler
     public:
         IOHandler(MusicPlayer* player);
         void ProcessCommand(const std::string& cmd);
-    private:
         void PrintHelp();
+
+    private:
         std::unordered_map<std::string, std::function<void(MusicPlayer*)>> commands_;
         MusicPlayer* player_;
 

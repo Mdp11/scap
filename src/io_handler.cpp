@@ -47,7 +47,13 @@ void IOHandler::PrintHelp()
 
 void IOHandler::ProcessCommand(const std::string& cmd)
 {
-    commands_[cmd](player_);
+    if(commands_.find(cmd) != commands_.end())
+        commands_[cmd](player_);
+    else
+    {
+        std::cout << "Invalid command!" << std::endl;
+    }
+    
 }
 
         

@@ -1,21 +1,22 @@
 #include <iostream>
 #include <thread>
 
-#include "input_helper.hpp"
+#include "io_handler.hpp"
 #include "music_player.hpp"
 
 int main(int argc, char *argv[])
 {
     MusicPlayer* player = new MusicPlayer();
     std::thread t{&MusicPlayer::run, player};
+    IOHandler io_handler{player};
     
     std::string cmd{};
-    inputHelper::PrintHelp();
+    io_handler.PrintHelp();
     while(cmd != "q")
     {
         cmd.clear();
         std::cin >> cmd;
-        inputHelper::ProcessCommand(cmd, player);
+        io_handler.ProcessCommand(cmd);
     }
     t.join();
     delete player;
