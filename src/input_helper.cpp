@@ -9,6 +9,7 @@
 
 void inputHelper::PrintHelp()
 {
+    std::cout << "##################SCAP##################" << std::endl;
     std::cout << "Available commands: " << std::endl;
     std::cout << "  - a (Add new audio to the playlist, audio path will be requested)" << std::endl;
     std::cout << "  - n (play Next audio in the playlist)" << std::endl;
@@ -16,6 +17,8 @@ void inputHelper::PrintHelp()
     std::cout << "  - p (Pause/Play)" << std::endl;
     std::cout << "  - h (Help, show this text)" << std::endl;
     std::cout << "  - q (Quit)" << std::endl;
+    std::cout << "########################################" << std::endl;
+    std::cout << "Your command: ";
 }
 
 bool inputHelper::IsValidCommand(const std::string& cmd)
@@ -28,7 +31,6 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
 {
     if(!IsValidCommand(cmd))
     {
-        system("clear");
         if(cmd != "h")
             std::cout << "Invalid command!" << std::endl;
         PrintHelp();
@@ -60,5 +62,5 @@ void inputHelper::ProcessCommand(const std::string& cmd, MusicPlayer* player)
     {
         player->addAction(std::make_unique<Quit>());
     }
-    system("clear");
+    //TODO: add play/pause/quitting/next song/ messages adjust message showing properly (clear erase stuff)
 }
