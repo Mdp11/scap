@@ -34,14 +34,16 @@ MusicPlayer::MusicPlayer()
         std::cout << "Exception while creating MusicPlayer: " << e.what() << std::endl;
         std::cout << "Aborting." << std::endl;
     }
+
+    actions_handler_ = std::thread{&MusicPlayer::processActions, this};
 }
 
 MusicPlayer::~MusicPlayer()
 {
+    actions_handler_.join();
     channelGroup_->release();
     system_->release();
 }
-
 
 void MusicPlayer::run()
 {
@@ -73,18 +75,7 @@ void MusicPlayer::run()
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 channel_->isPlaying(&isPlaying);
                 system_->update();
-                while(actions_.AreActionsRequested())
-                {
-                    auto action = actions_.pop();
-                    action->execute(this);
-                    if(shutdown_)
-                        break;
-                }
-                
-                if(shutdown_)
-                    break;
-
-            } while (isPlaying);
+            } while (isPlaying && !shutdown_);
         }
         catch(const std::exception& e)
         {
@@ -96,6 +87,15 @@ void MusicPlayer::run()
     }
 }
 
+void MusicPlayer::processActions()
+{
+    while(!shutdown_)
+    {
+        auto action = actions_.pop();
+        action->execute(this);
+    }
+}
+
 std::string MusicPlayer::getCurrentSongInfo()
 {
     return current_audio_ ? current_audio_->getFilePath() : "No audio currently playing";
@@ -104,4 +104,5 @@ std::string MusicPlayer::getCurrentSongInfo()
 void MusicPlayer::signalShutDown() 
 { 
     shutdown_ = true;
+    playlist_.push(std::make_unique<Mp3>("shutdown"));
 }

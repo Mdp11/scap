@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include <atomic>
+#include <thread>
 #include "fmod.hpp"
 
 #include "playlist.hpp"
@@ -32,6 +34,7 @@ class MusicPlayer
 
     private:
         void checkFmodOperation(const std::string &message, FMOD_RESULT result);
+        void processActions();
 
         FMOD::System* system_ {nullptr};
         FMOD::ChannelGroup* channelGroup_ {nullptr};
@@ -42,7 +45,9 @@ class MusicPlayer
         ActionQueue actions_{};
 
         std::unique_ptr<Audio> current_audio_{};
-        bool shutdown_{false};
+        std::atomic<bool> shutdown_{false};
+
+        std::thread actions_handler_;
 
 };
 
