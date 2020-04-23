@@ -16,19 +16,19 @@ class Action
 class PlayPause : public Action
 {
     public:
-        virtual void execute(MusicPlayer* player);
+        virtual void execute(MusicPlayer* player) override;
 };
 
 class Stop : public Action
 {
     public:
-        virtual void execute(MusicPlayer* player);
+        virtual void execute(MusicPlayer* player) override;
 };
 
 class Quit : public Action
 {
     public:
-        virtual void execute(MusicPlayer* player);
+        virtual void execute(MusicPlayer* player) override;
 };
 
 #endif
