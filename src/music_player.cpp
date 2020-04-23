@@ -1,9 +1,10 @@
 #include <iostream>
 #include <thread>
+
 #include "fmod_errors.h"
 
+#include "audio.hpp"
 #include "music_player.hpp"
-#include "mp3.hpp"
 
 void MusicPlayer::checkFmodOperation(const std::string &message, FMOD_RESULT result)
 {
@@ -54,7 +55,6 @@ void MusicPlayer::run()
             break;
         
         FMOD_RESULT result;
-        //TODO: change info message
         std::cout << "Playing " << current_audio_->getFilePath() << "..." << std::endl;
         FMOD::Sound *sound = nullptr;
         system_->createSound(current_audio_->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
@@ -103,5 +103,5 @@ std::string MusicPlayer::getCurrentSongInfo()
 void MusicPlayer::signalShutDown() 
 { 
     shutdown_ = true;
-    playlist_.push(std::make_unique<Mp3>("shutdown"));
+    playlist_.push(std::make_unique<Audio>("shutdown"));
 }

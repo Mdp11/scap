@@ -1,8 +1,9 @@
-#include "io_handler.hpp"
-#include "music_player.hpp"
 #include <iostream>
 #include <future>
-#include "mp3.hpp"
+
+#include "audio.hpp"
+#include "io_handler.hpp"
+#include "music_player.hpp"
 
 IOHandler::IOHandler(MusicPlayer* player) : player_(player)
 {
@@ -11,7 +12,7 @@ IOHandler::IOHandler(MusicPlayer* player) : player_(player)
                                         std::string audio_file_name{};
                                         std::cout << "Insert audio file path: ";
                                         std:: cin >> audio_file_name;
-                                        std::unique_ptr<Mp3> audio = std::make_unique<Mp3>(audio_file_name);
+                                        std::unique_ptr<Audio> audio = std::make_unique<Audio>(audio_file_name);
                                         player->enqueue(std::move(audio));
                                      }
         },

@@ -7,7 +7,7 @@ class Audio
 {
     public:
         Audio(std::string s) : path_(s){} ;
-        virtual void getInfo() = 0;
+        virtual std::string getInfo() { return path_; };
         virtual std::string getFilePath() { return path_; }
     protected:
         std::string path_;
