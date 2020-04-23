@@ -55,8 +55,7 @@ void MusicPlayer::run()
         
         FMOD_RESULT result;
         //TODO: change info message
-        std::cout << "Playing " << current_audio_->getFilePath();
-        std::cout << std::endl;
+        std::cout << "Playing " << current_audio_->getFilePath() << "..." << std::endl;
         FMOD::Sound *sound = nullptr;
         system_->createSound(current_audio_->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
 
@@ -80,7 +79,7 @@ void MusicPlayer::run()
         catch(const std::exception& e)
         {
             std::cout << e.what() << std::endl;
-            std::cout << "The file you tried to play does not exist or it is not an audio file" << std::endl;
+            std::cout << "The file you tried to play does not exist or it is not an audio file." << std::endl;
         }
         sound->release();
         current_audio_.reset();
