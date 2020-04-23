@@ -34,6 +34,7 @@ Two samples mp3 files are available in this repo under the "samples" folder.
 * Specific mp3 support with tag reading
 * Raise/Lower volume
 * Mute/Unmute
+* ncurses based UI
 
 ## Udacity rubric points
 In the following list only one example addressing each point is indicated, since in most cases there are more of them.
