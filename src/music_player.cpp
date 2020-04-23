@@ -97,7 +97,7 @@ void MusicPlayer::processActions()
 
 std::string MusicPlayer::getCurrentSongInfo()
 {
-    return current_audio_ ? current_audio_->getFilePath() : "No audio currently playing";
+    return current_audio_ ? current_audio_->getFilePath() : "nothing";
 }
 
 void MusicPlayer::signalShutDown() 

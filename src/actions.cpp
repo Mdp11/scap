@@ -1,6 +1,7 @@
+#include <iostream>
+
 #include "actions.hpp"
 #include "music_player.hpp"
-#include <iostream>
 
 void PlayPause::execute(MusicPlayer* player)
 { 

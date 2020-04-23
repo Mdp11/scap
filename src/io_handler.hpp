@@ -1,9 +1,9 @@
 #ifndef _IO_HANDLER_HPP_
 #define _IO_HANDLER_HPP_
 
+#include <functional>
 #include <string>
 #include <unordered_map>
-#include <functional>
 
 class MusicPlayer;
 

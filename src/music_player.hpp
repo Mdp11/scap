@@ -1,16 +1,17 @@
 #ifndef _MUSIC_PLAYER_HPP_
 #define _MUSIC_PLAYER_HPP_
 
-#include <string>
-#include <memory>
 #include <atomic>
+#include <memory>
+#include <string>
 #include <thread>
+
 #include "fmod.hpp"
 
-#include "playlist.hpp"
+#include "audio.hpp"
 #include "action_queue.hpp"
 #include "actions.hpp"
-#include "audio.hpp"
+#include "playlist.hpp"
 
 class Action;
 

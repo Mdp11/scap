@@ -1,9 +1,9 @@
 #ifndef _MESSAGE_QUEUE_HPP_
 #define _MESSAGE_QUEUE_HPP_
 
+#include <condition_variable>
 #include <deque>
 #include <mutex>
-#include <condition_variable>
 
 template <typename T>
 class MessageQueue 
