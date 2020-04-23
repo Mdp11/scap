@@ -18,15 +18,13 @@ MusicPlayer::MusicPlayer()
     try
     {
         FMOD_RESULT result;
-        // Create the main system object.
+        
         result = FMOD::System_Create(&system_);
         checkFmodOperation("FMOD: Failed to create system object", result);
 
-        // Initialize FMOD.
         result = system_->init(512, FMOD_INIT_NORMAL, nullptr);
         checkFmodOperation("FMOD: Failed to initialise system object", result);
 
-        // Create the channel group.
         result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
         checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
     }
@@ -55,20 +53,18 @@ void MusicPlayer::run()
             break;
         
         FMOD_RESULT result;
-        std::cout << "Playing " << current_audio_->getFilePath() << "..." << std::endl;
         FMOD::Sound *sound = nullptr;
         system_->createSound(current_audio_->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
 
         try
         {
-            // Play the sound.
             result = system_->playSound(sound, nullptr, false, &channel_);
             checkFmodOperation("FMOD: Failed to play sound", result);
             
-            // Assign the channel to the group.
             result = channel_->setChannelGroup(channelGroup_);
             checkFmodOperation("FMOD: Failed to set channel group on", result);
 
+            std::cout << "Playing \"" << current_audio_->getFilePath() << "\"..." << std::endl;
             bool isPlaying = false;
             do {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -78,8 +74,7 @@ void MusicPlayer::run()
         }
         catch(const std::exception& e)
         {
-            std::cout << e.what() << std::endl;
-            std::cout << "The file you tried to play does not exist or it is not an audio file." << std::endl;
+            std::cout << "Error: the file you tried to play does not exist or it is not an audio file." << std::endl;
         }
         sound->release();
         current_audio_.reset();
