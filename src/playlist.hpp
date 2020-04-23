@@ -2,8 +2,8 @@
 #define _PLAYLIST_HPP_
 
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "message_queue.hpp"
 #include "audio.hpp"

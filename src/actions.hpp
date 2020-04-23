@@ -15,17 +15,20 @@ class Action
 
 class PlayPause : public Action
 {
-    virtual void execute(MusicPlayer* player);
+    public:
+        virtual void execute(MusicPlayer* player);
 };
 
 class Stop : public Action
 {
-    virtual void execute(MusicPlayer* player);
+    public:
+        virtual void execute(MusicPlayer* player);
 };
 
 class Quit : public Action
 {
-    virtual void execute(MusicPlayer* player);
+    public:
+        virtual void execute(MusicPlayer* player);
 };
 
 #endif

@@ -1,8 +1,9 @@
 #ifndef _ACTION_QUEUE_HPP_
 #define _ACTION_QUEUE_HPP_
 
-#include "message_queue.hpp"
 #include <memory>
+
+#include "message_queue.hpp"
 
 class Action;
 
