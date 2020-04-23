@@ -74,7 +74,8 @@ void MusicPlayer::run()
         }
         catch(const std::exception& e)
         {
-            std::cout << "Error: the file you tried to play does not exist or it is not an audio file." << std::endl;
+            std::cout << e.what() << std::endl;
+            std::cout << "Requested file does not exists or it is not supported." << std::endl;
         }
         sound->release();
         current_audio_.reset();
