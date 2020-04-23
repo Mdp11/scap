@@ -75,7 +75,7 @@ void MusicPlayer::run()
         catch(const std::exception& e)
         {
             std::cout << e.what() << std::endl;
-            std::cout << "Possible causes: << std::endl;
+            std::cout << "Possible causes:" << std::endl;
             std::cout << "  - requested file does not exist" << std::endl;
             std::cout << "  - requested file is not an audio file" << std::endl;
             std::cout << "  - your system has problems with sound drivers" << std::endl;
