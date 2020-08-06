@@ -6,10 +6,11 @@
 #include "audio.hpp"
 #include "music_player.hpp"
 
-void MusicPlayer::checkFmodOperation(const std::string &message, FMOD_RESULT result)
+void MusicPlayer::checkFmodOperation(const std::string& message, FMOD_RESULT result)
 {
-    if (result != FMOD_OK) {
-        throw(std::runtime_error(message + " : " + std::to_string(result) + " " + FMOD_ErrorString(result)));
+    if (result != FMOD_OK)
+    {
+        throw (std::runtime_error(message + " : " + std::to_string(result) + " " + FMOD_ErrorString(result)));
     }
 }
 
@@ -18,7 +19,7 @@ MusicPlayer::MusicPlayer()
     try
     {
         FMOD_RESULT result;
-        
+
         result = FMOD::System_Create(&system_);
         checkFmodOperation("FMOD: Failed to create system object", result);
 
@@ -28,7 +29,7 @@ MusicPlayer::MusicPlayer()
         result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
         checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
     }
-    catch(std::exception e)
+    catch (std::exception e)
     {
         std::cout << "Exception while creating MusicPlayer: " << e.what() << std::endl;
         std::cout << "Aborting." << std::endl;
@@ -46,33 +47,36 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::run()
 {
-    while(!shutdown_)
+    while (!shutdown_)
     {
         current_audio_ = playlist_.pop();
-        if(shutdown_)
+        if (shutdown_)
+        {
             break;
-        
+        }
+
         FMOD_RESULT result;
-        FMOD::Sound *sound = nullptr;
+        FMOD::Sound* sound = nullptr;
         system_->createSound(current_audio_->getFilePath().c_str(), FMOD_DEFAULT, nullptr, &sound);
 
         try
         {
             result = system_->playSound(sound, nullptr, false, &channel_);
             checkFmodOperation("FMOD: Failed to play sound", result);
-            
+
             result = channel_->setChannelGroup(channelGroup_);
             checkFmodOperation("FMOD: Failed to set channel group on", result);
 
             std::cout << "Playing \"" << current_audio_->getFilePath() << "\"..." << std::endl;
             bool isPlaying = false;
-            do {
+            do
+            {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 channel_->isPlaying(&isPlaying);
                 system_->update();
             } while (isPlaying && !shutdown_);
         }
-        catch(const std::exception& e)
+        catch (const std::exception& e)
         {
             std::cout << e.what() << std::endl;
             std::cout << "Possible causes:" << std::endl;
@@ -87,7 +91,7 @@ void MusicPlayer::run()
 
 void MusicPlayer::processActions()
 {
-    while(!shutdown_)
+    while (!shutdown_)
     {
         auto action = actions_.pop();
         action->execute(this);
@@ -99,8 +103,8 @@ std::string MusicPlayer::getCurrentSongInfo()
     return current_audio_ ? current_audio_->getFilePath() : "nothing";
 }
 
-void MusicPlayer::signalShutDown() 
-{ 
+void MusicPlayer::signalShutDown()
+{
     shutdown_ = true;
     playlist_.push(std::make_unique<Audio>("shutdown"));
 }

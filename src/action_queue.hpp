@@ -9,8 +9,8 @@ class Action;
 
 class ActionQueue : public MessageQueue<std::unique_ptr<Action>>
 {
-    public:
-        bool AreActionsRequested();
+public:
+    bool AreActionsRequested();
 };
 
 #endif

@@ -8,28 +8,30 @@
 IOHandler::IOHandler(MusicPlayer* player) : player_(player)
 {
     commands_ = {
-        {"a", [](MusicPlayer* player){  
-                                        std::string audio_file_name{};
-                                        std::cout << "Insert audio file path: ";
-                                        std:: cin >> audio_file_name;
-                                        std::unique_ptr<Audio> audio = std::make_unique<Audio>(audio_file_name);
-                                        player->enqueue(std::move(audio));
-                                     }
+        {"a", [](MusicPlayer* player)
+        {
+            std::string audio_file_name{};
+            std::cout << "Insert audio file path: ";
+            std::cin >> audio_file_name;
+            std::unique_ptr<Audio> audio = std::make_unique<Audio>(audio_file_name);
+            player->enqueue(std::move(audio));
+        }
         },
-        
-        {"n", [](MusicPlayer* player){ player->addAction(std::make_unique<Stop>());}},
-        
-        {"c", [](MusicPlayer* player){
-                                        auto current_song_info_ = std::async(std::launch::async, &MusicPlayer::getCurrentSongInfo, player);
-                                        std::cout << "Currently playing " << current_song_info_.get() << std::endl;
-                                     }
-        },
-        
-        {"p", [](MusicPlayer* player){ player->addAction(std::make_unique<PlayPause>()); }},
 
-        {"x", [this](MusicPlayer* player){ PrintHelp(); }},
-        
-        {"q", [](MusicPlayer* player){ player->addAction(std::make_unique<Quit>()); }},
+        {"n", [](MusicPlayer* player) { player->addAction(std::make_unique<Stop>()); }},
+
+        {"c", [](MusicPlayer* player)
+        {
+            auto current_song_info_ = std::async(std::launch::async, &MusicPlayer::getCurrentSongInfo, player);
+            std::cout << "Currently playing " << current_song_info_.get() << std::endl;
+        }
+        },
+
+        {"p", [](MusicPlayer* player) { player->addAction(std::make_unique<PlayPause>()); }},
+
+        {"x", [this](MusicPlayer* player) { PrintHelp(); }},
+
+        {"q", [](MusicPlayer* player) { player->addAction(std::make_unique<Quit>()); }},
     };
 }
 
@@ -49,16 +51,16 @@ void IOHandler::PrintHelp()
 
 void IOHandler::ProcessCommand(const std::string& cmd)
 {
-    if(commands_.find(cmd) != commands_.end())
+    if (commands_.find(cmd) != commands_.end())
     {
         commands_[cmd](player_);
     }
     else
-    {   
+    {
         std::cout << "Invalid command!" << std::endl;
 
     }
-    
+
 }
 
         

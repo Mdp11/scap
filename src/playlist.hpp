@@ -10,8 +10,8 @@
 
 class Playlist : public MessageQueue<std::unique_ptr<Audio>>
 {
-    public:
-        std::vector<std::string> getCurrentSongs();
+public:
+    std::vector<std::string> getCurrentSongs();
 };
 
 #endif

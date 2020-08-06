@@ -4,15 +4,15 @@
 #include "io_handler.hpp"
 #include "music_player.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     MusicPlayer* player = new MusicPlayer();
     std::thread t{&MusicPlayer::run, player};
     IOHandler io_handler{player};
-    
+
     std::string cmd{};
     io_handler.PrintHelp();
-    while(cmd != "q")
+    while (cmd != "q")
     {
         cmd.clear();
         std::cin >> cmd;
