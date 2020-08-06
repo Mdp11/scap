@@ -1,5 +1,5 @@
-#ifndef _MUSIC_PLAYER_HPP_
-#define _MUSIC_PLAYER_HPP_
+#ifndef MUSIC_PLAYER_HPP
+#define MUSIC_PLAYER_HPP
 
 #include <atomic>
 #include <memory>
@@ -34,12 +34,12 @@ public:
     void signalShutDown();
 
 private:
-    void checkFmodOperation(const std::string& message, FMOD_RESULT result);
+    static void checkFmodOperation(const std::string& message, FMOD_RESULT result);
     void processActions();
 
     FMOD::System* system_{nullptr};
     FMOD::ChannelGroup* channelGroup_{nullptr};
-    FMOD::Sound* currentsound_{nullptr};
+    FMOD::Sound* current_sound_{nullptr};
     FMOD::Channel* channel_{nullptr};
 
     Playlist playlist_{};
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif
+#endif //MUSIC_PLAYER_HPP

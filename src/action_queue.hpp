@@ -1,5 +1,5 @@
-#ifndef _ACTION_QUEUE_HPP_
-#define _ACTION_QUEUE_HPP_
+#ifndef ACTION_QUEUE_HPP
+#define ACTION_QUEUE_HPP
 
 #include <memory>
 
@@ -13,4 +13,4 @@ public:
     bool AreActionsRequested();
 };
 
-#endif
+#endif //ACTION_QUEUE_HPP

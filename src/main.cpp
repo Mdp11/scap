@@ -6,12 +6,12 @@
 
 int main(int argc, char* argv[])
 {
-    MusicPlayer* player = new MusicPlayer();
+    auto* player = new MusicPlayer();
     std::thread t{&MusicPlayer::run, player};
     IOHandler io_handler{player};
 
     std::string cmd{};
-    io_handler.PrintHelp();
+    IOHandler::PrintHelp();
     while (cmd != "q")
     {
         cmd.clear();

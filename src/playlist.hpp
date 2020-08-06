@@ -1,5 +1,5 @@
-#ifndef _PLAYLIST_HPP_
-#define _PLAYLIST_HPP_
+#ifndef PLAYLIST_HPP
+#define PLAYLIST_HPP
 
 #include <memory>
 #include <string>
@@ -14,4 +14,4 @@ public:
     std::vector<std::string> getCurrentSongs();
 };
 
-#endif
+#endif //PLAYLIST_HPP

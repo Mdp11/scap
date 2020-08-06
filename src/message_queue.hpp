@@ -1,5 +1,5 @@
-#ifndef _MESSAGE_QUEUE_HPP_
-#define _MESSAGE_QUEUE_HPP_
+#ifndef MESSAGE_QUEUE_HPP
+#define MESSAGE_QUEUE_HPP
 
 #include <condition_variable>
 #include <deque>
@@ -32,4 +32,4 @@ protected:
 
 };
 
-#endif
+#endif //MESSAGE_QUEUE_HPP

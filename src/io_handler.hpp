@@ -1,5 +1,5 @@
-#ifndef _IO_HANDLER_HPP_
-#define _IO_HANDLER_HPP_
+#ifndef IO_HANDLER_HPP
+#define IO_HANDLER_HPP
 
 #include <functional>
 #include <string>
@@ -10,9 +10,9 @@ class MusicPlayer;
 class IOHandler
 {
 public:
-    IOHandler(MusicPlayer* player);
+    explicit IOHandler(MusicPlayer* player);
     void ProcessCommand(const std::string& cmd);
-    void PrintHelp();
+    static void PrintHelp();
 
 private:
     std::unordered_map<std::string, std::function<void(MusicPlayer*)>> commands_;
@@ -20,4 +20,4 @@ private:
 
 };
 
-#endif
+#endif //IO_HANDLER_HPP

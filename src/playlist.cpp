@@ -8,5 +8,5 @@ std::vector<std::string> Playlist::getCurrentSongs()
     {
         list.push_back(song->getFilePath());
     }
-    return getCurrentSongs();
+    return list;
 }

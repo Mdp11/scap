@@ -29,7 +29,7 @@ MusicPlayer::MusicPlayer()
         result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
         checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
     }
-    catch (std::exception e)
+    catch (std::exception& e)
     {
         std::cout << "Exception while creating MusicPlayer: " << e.what() << std::endl;
         std::cout << "Aborting." << std::endl;
