@@ -26,15 +26,15 @@ MusicPlayer::MusicPlayer()
         result = system_->init(512, FMOD_INIT_NORMAL, nullptr);
         checkFmodOperation("FMOD: Failed to initialise system object", result);
 
-        result = system_->createChannelGroup("inGameSoundEffects", &channelGroup_);
-        checkFmodOperation("FMOD: Failed to create in-game sound effects channel group", result);
+        result = system_->createChannelGroup("BaseChannel", &channelGroup_);
+        checkFmodOperation("FMOD: Failed to create base channel group", result);
     }
     catch (std::exception& e)
     {
         std::cout << "Exception while creating MusicPlayer: " << e.what() << std::endl;
         std::cout << "Aborting." << std::endl;
     }
-
+    
     actions_handler_ = std::thread{&MusicPlayer::processActions, this};
 }
 
@@ -47,10 +47,10 @@ MusicPlayer::~MusicPlayer()
 
 void MusicPlayer::run()
 {
-    while (!shutdown_)
+    while (!shutdown_.load())
     {
         current_audio_ = playlist_.pop();
-        if (shutdown_)
+        if (shutdown_.load())
         {
             break;
         }
@@ -74,7 +74,7 @@ void MusicPlayer::run()
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 channel_->isPlaying(&isPlaying);
                 system_->update();
-            } while (isPlaying && !shutdown_);
+            } while (isPlaying && !shutdown_.load());
         }
         catch (const std::exception& e)
         {
@@ -91,7 +91,7 @@ void MusicPlayer::run()
 
 void MusicPlayer::processActions()
 {
-    while (!shutdown_)
+    while (!shutdown_.load())
     {
         auto action = actions_.pop();
         action->execute(this);
@@ -105,6 +105,6 @@ std::string MusicPlayer::getCurrentSongInfo()
 
 void MusicPlayer::signalShutDown()
 {
-    shutdown_ = true;
+    shutdown_.store(true);
     playlist_.push(std::make_unique<Audio>("shutdown"));
 }

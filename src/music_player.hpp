@@ -17,6 +17,23 @@ class Action;
 
 class MusicPlayer
 {
+private:
+    Playlist playlist_{};
+    ActionQueue actions_{};
+
+    std::unique_ptr<Audio> current_audio_{};
+    std::atomic<bool> shutdown_{false};
+
+    std::thread actions_handler_;
+
+    FMOD::System* system_{nullptr};
+    FMOD::ChannelGroup* channelGroup_{nullptr};
+    FMOD::Sound* current_sound_{nullptr};
+    FMOD::Channel* channel_{nullptr};
+
+    void processActions();
+    static void checkFmodOperation(const std::string& message, FMOD_RESULT result);
+
 public:
     MusicPlayer();
     ~MusicPlayer();
@@ -32,23 +49,6 @@ public:
 
     std::string getCurrentSongInfo();
     void signalShutDown();
-
-private:
-    static void checkFmodOperation(const std::string& message, FMOD_RESULT result);
-    void processActions();
-
-    FMOD::System* system_{nullptr};
-    FMOD::ChannelGroup* channelGroup_{nullptr};
-    FMOD::Sound* current_sound_{nullptr};
-    FMOD::Channel* channel_{nullptr};
-
-    Playlist playlist_{};
-    ActionQueue actions_{};
-
-    std::unique_ptr<Audio> current_audio_{};
-    std::atomic<bool> shutdown_{false};
-
-    std::thread actions_handler_;
 
 };
 
